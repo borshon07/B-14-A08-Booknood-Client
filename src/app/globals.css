@@ -84,37 +84,37 @@
 }
 
 .dark {
-  --background: #1c2420;           /* Deep Forest Charcoal */
-  --foreground: #ece8dc;
-  --card: #232c27;
-  --card-foreground: #ece8dc;
-  --popover: #232c27;
-  --popover-foreground: #ece8dc;
-  --primary: #9cb89a;              /* Sage Green */
-  --primary-foreground: #14201a;
-  --secondary: #2a332e;
-  --secondary-foreground: #ece8dc;
-  --muted: #2a332e;
-  --muted-foreground: #a3ab9f;
-  --accent: #2f3b35;
-  --accent-foreground: #ece8dc;
+  --background: #080d16;           /* Midnight Navy */
+  --foreground: #f5f3ef;           /* Primary Text */
+  --card: #111827;                 /* Card / Surface */
+  --card-foreground: #f5f3ef;
+  --popover: #242b38;              /* Elevated Surface */
+  --popover-foreground: #f5f3ef;
+  --primary: #d6c3a5;              /* Champagne Gold */
+  --primary-foreground: #080d16;
+  --secondary: #242b38;            /* Elevated Surface */
+  --secondary-foreground: #f0e5d3;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;     /* Secondary Text */
+  --accent: #242b38;               /* Elevated Surface */
+  --accent-foreground: #f0e5d3;    /* Secondary Accent (readable text) */
   --destructive: #e57368;
-  --border: #34403a;
-  --input: #34403a;
-  --ring: #9cb89a;
-  --chart-1: #9cb89a;
-  --chart-2: #6b8a67;
-  --chart-3: #d9c9a3;
-  --chart-4: #b7c9b4;
-  --chart-5: #a3ab9f;
-  --sidebar: #232c27;
-  --sidebar-foreground: #ece8dc;
-  --sidebar-primary: #9cb89a;
-  --sidebar-primary-foreground: #14201a;
-  --sidebar-accent: #2f3b35;
-  --sidebar-accent-foreground: #ece8dc;
-  --sidebar-border: #34403a;
-  --sidebar-ring: #9cb89a;
+  --border: #293241;
+  --input: #293241;
+  --ring: #d6c3a5;
+  --chart-1: #d6c3a5;
+  --chart-2: #f0e5d3;
+  --chart-3: #9ca3af;
+  --chart-4: #293241;
+  --chart-5: #242b38;
+  --sidebar: #111827;
+  --sidebar-foreground: #f5f3ef;
+  --sidebar-primary: #d6c3a5;
+  --sidebar-primary-foreground: #080d16;
+  --sidebar-accent: #242b38;
+  --sidebar-accent-foreground: #f0e5d3;
+  --sidebar-border: #293241;
+  --sidebar-ring: #d6c3a5;
 }
 
 @layer base {
@@ -126,5 +126,6 @@
   }
   html {
     @apply font-sans;
+     scroll-behavior: smooth;
   }
 }

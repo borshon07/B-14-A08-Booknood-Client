@@ -16,5 +16,12 @@ export function proxy(request: NextRequest) {
 
 // only these routes are private
 export const config = {
-  matcher: ["/add-book", "/my-books", "/my-borrows", "/books/:id", "/profile"],
+  matcher: [
+    "/add-book",
+    "/my-books",
+    "/my-books/:path*",
+    "/my-borrows",
+    "/books/:id",
+    "/profile",
+  ],
 };
