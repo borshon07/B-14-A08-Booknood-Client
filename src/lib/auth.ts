@@ -7,6 +7,8 @@ const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("booknook");
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: [process.env.BETTER_AUTH_URL as string],
   database: mongodbAdapter(db, { client }),
   emailAndPassword: {
     enabled: true,
