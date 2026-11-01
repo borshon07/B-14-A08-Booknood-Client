@@ -20,6 +20,10 @@ export default function AddBookForm() {
   const user = session?.user;
   const [loading, setLoading] = useState(false);
 
+  // states for category (select or write your own)
+  const [category, setCategory] = useState("");
+  const [customCategory, setCustomCategory] = useState("");
+
   // states for title suggestions
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [titleInput, setTitleInput] = useState("");
@@ -52,7 +56,9 @@ export default function AddBookForm() {
       { method: "POST", body: formData },
     );
     const data = await res.json();
-    if (!data.success) throw new Error("Image upload failed");
+    if (!data.success) {
+      throw new Error(data?.error?.message || "Image upload failed");
+    }
     return data.data.url as string;
   };
 
@@ -61,8 +67,6 @@ export default function AddBookForm() {
     const form = e.currentTarget;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
     const author = (form.elements.namedItem("author") as HTMLInputElement)
-      .value;
-    const category = (form.elements.namedItem("category") as HTMLSelectElement)
       .value;
     const description = (
       form.elements.namedItem("description") as HTMLTextAreaElement
@@ -73,6 +77,14 @@ export default function AddBookForm() {
     const file = (form.elements.namedItem("image") as HTMLInputElement)
       .files?.[0];
 
+    // use the typed category if the user chose "Add new category"
+    const finalCategory =
+      category === "custom" ? customCategory.trim() : category;
+
+    if (!finalCategory) {
+      toast.error("Please select or write a category");
+      return;
+    }
     if (!file) {
       toast.error("Please select a book image");
       return;
@@ -89,7 +101,7 @@ export default function AddBookForm() {
       const book = {
         title,
         author,
-        category,
+        category: finalCategory,
         image,
         description,
         totalCopies,
@@ -99,7 +111,10 @@ export default function AddBookForm() {
         method: "POST",
         body: JSON.stringify(book),
       });
-      if (!res.ok) throw new Error("Failed to add book");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message || "Failed to add book");
+      }
 
       toast.success("Book added successfully!");
       router.push("/my-books");
@@ -167,13 +182,16 @@ export default function AddBookForm() {
             <Label htmlFor="author">Author Name</Label>
             <Input id="author" name="author" required />
           </div>
+
+          {/* category: select or write your own */}
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <select
               id="category"
               name="category"
               required
-              defaultValue=""
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
               className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
             >
               <option value="" disabled>
@@ -184,8 +202,20 @@ export default function AddBookForm() {
                   {c}
                 </option>
               ))}
+              <option value="custom">+ Add new category</option>
             </select>
+
+            {category === "custom" && (
+              <Input
+                placeholder="Write your category (e.g. Poetry)"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                maxLength={30}
+                required
+              />
+            )}
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="image">Book Image</Label>
             <Input
