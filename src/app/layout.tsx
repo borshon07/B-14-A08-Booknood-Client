@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import ScrollTopButton from "@/components/ScrollTopButton";
+import Preloader from "@/components/Preloader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
+          <Preloader />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />

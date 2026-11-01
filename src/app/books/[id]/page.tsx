@@ -4,12 +4,19 @@ import { notFound } from "next/navigation";
 import { getBook } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import BorrowButton from "./BorrowButton";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "BookNook | Book Details",
 };
 
 async function BookDetails({ id }: { id: string }) {
+  
+  const jwtToken = await auth.api.getToken({
+    headers: await headers(),
+  })
+  console.log(jwtToken?.token)
   const book = await getBook(id);
   if (!book) notFound();
 

@@ -7,6 +7,8 @@ import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authFetch } from "@/lib/token";
+import { API_URL } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
@@ -15,8 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function BorrowButton({
   bookId,
@@ -40,14 +40,9 @@ export default function BorrowButton({
   const handleBorrow = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/borrows`, {
+      const res = await authFetch(`${API_URL}/borrows`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookId,
-          userName: user?.name,
-          userEmail: user?.email,
-        }),
+        body: JSON.stringify({ bookId }),
       });
       const data = await res.json();
 

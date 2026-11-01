@@ -27,6 +27,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { clearToken } from "@/lib/token";
 
 type NavItem = {
   href: string;
@@ -88,9 +89,8 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    await authClient.signOut();
-    toast.success("Logged out");
-    router.push("/login");
+  clearToken();
+  await authClient.signOut();
   };
 
   const links: NavItem[] = [

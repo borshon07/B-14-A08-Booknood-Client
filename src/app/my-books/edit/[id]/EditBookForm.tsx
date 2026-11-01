@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import type { Book } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Spinner from "@/components/Spinner";
+import { authFetch } from "@/lib/token";
+import { API_URL, type Book } from "@/lib/api";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
 export default function EditBookForm({ id }: { id: string }) {
@@ -44,22 +44,42 @@ export default function EditBookForm({ id }: { id: string }) {
     if (!book) return;
     const form = e.currentTarget;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const author = (form.elements.namedItem("author") as HTMLInputElement).value;
-    const category = (form.elements.namedItem("category") as HTMLSelectElement).value;
-    const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value;
-    const totalCopies = Number((form.elements.namedItem("totalCopies") as HTMLInputElement).value);
-    const file = (form.elements.namedItem("image") as HTMLInputElement).files?.[0];
+    const author = (form.elements.namedItem("author") as HTMLInputElement)
+      .value;
+    const category = (form.elements.namedItem("category") as HTMLSelectElement)
+      .value;
+    const description = (
+      form.elements.namedItem("description") as HTMLTextAreaElement
+    ).value;
+    const totalCopies = Math.max(
+      0,
+      Number(
+        (form.elements.namedItem("totalCopies") as HTMLInputElement).value,
+      ),
+    );
+    const file = (form.elements.namedItem("image") as HTMLInputElement)
+      .files?.[0];
 
     try {
       setSaving(true);
       const image = file ? await uploadImage(file) : book.image;
 
-      const res = await fetch(`${API_URL}/books/${id}`, {
+      const res = await authFetch(`${API_URL}/books/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, author, category, description, totalCopies, image }),
+        body: JSON.stringify({
+          title,
+          author,
+          category,
+          description,
+          totalCopies,
+          image,
+        }),
       });
-      if (!res.ok) throw new Error("Update failed");
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message || "Update failed");
+      }
 
       toast.success("Book updated successfully!");
       router.push("/my-books");
@@ -85,7 +105,12 @@ export default function EditBookForm({ id }: { id: string }) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="author">Author Name</Label>
-            <Input id="author" name="author" defaultValue={book.author} required />
+            <Input
+              id="author"
+              name="author"
+              defaultValue={book.author}
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
@@ -103,9 +128,15 @@ export default function EditBookForm({ id }: { id: string }) {
             </select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="image">Book Image (leave empty to keep current)</Label>
+            <Label htmlFor="image">
+              Book Image (leave empty to keep current)
+            </Label>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={book.image} alt={book.title} className="h-24 w-20 rounded object-cover" />
+            <img
+              src={book.image}
+              alt={book.title}
+              className="h-24 w-20 rounded object-cover"
+            />
             <Input id="image" name="image" type="file" accept="image/*" />
           </div>
           <div className="space-y-2">
@@ -121,7 +152,12 @@ export default function EditBookForm({ id }: { id: string }) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="description">Short Description</Label>
-            <Textarea id="description" name="description" defaultValue={book.description} required />
+            <Textarea
+              id="description"
+              name="description"
+              defaultValue={book.description}
+              required
+            />
           </div>
           <Button type="submit" className="w-full" disabled={saving}>
             {saving ? "Saving..." : "Save Changes"}

@@ -4,9 +4,11 @@ import { getBooks } from "@/lib/api";
 import BookCard from "@/components/BookCard";
 import Spinner from "@/components/Spinner";
 
+
 export const metadata: Metadata = {
   title: "BookNook | All Books",
 };
+
 
 async function BookList() {
   const books = await getBooks();

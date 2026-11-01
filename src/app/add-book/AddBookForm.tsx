@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import type { Book } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Spinner from "@/components/Spinner";
+import { authFetch } from "@/lib/token";
+import { API_URL, type Book } from "@/lib/api";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
 export default function AddBookForm() {
@@ -60,11 +60,18 @@ export default function AddBookForm() {
     e.preventDefault();
     const form = e.currentTarget;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const author = (form.elements.namedItem("author") as HTMLInputElement).value;
-    const category = (form.elements.namedItem("category") as HTMLSelectElement).value;
-    const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value;
-    const totalCopies = Number((form.elements.namedItem("totalCopies") as HTMLInputElement).value);
-    const file = (form.elements.namedItem("image") as HTMLInputElement).files?.[0];
+    const author = (form.elements.namedItem("author") as HTMLInputElement)
+      .value;
+    const category = (form.elements.namedItem("category") as HTMLSelectElement)
+      .value;
+    const description = (
+      form.elements.namedItem("description") as HTMLTextAreaElement
+    ).value;
+    const totalCopies = Number(
+      (form.elements.namedItem("totalCopies") as HTMLInputElement).value,
+    );
+    const file = (form.elements.namedItem("image") as HTMLInputElement)
+      .files?.[0];
 
     if (!file) {
       toast.error("Please select a book image");
@@ -86,12 +93,10 @@ export default function AddBookForm() {
         image,
         description,
         totalCopies,
-        addedBy: { name: user?.name, email: user?.email },
       };
 
-      const res = await fetch(`${API_URL}/books`, {
+      const res = await authFetch(`${API_URL}/books`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(book),
       });
       if (!res.ok) throw new Error("Failed to add book");
@@ -183,11 +188,24 @@ export default function AddBookForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="image">Book Image</Label>
-            <Input id="image" name="image" type="file" accept="image/*" required />
+            <Input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="totalCopies">Total Copies</Label>
-            <Input id="totalCopies" name="totalCopies" type="number" min={1} defaultValue={1} required />
+            <Input
+              id="totalCopies"
+              name="totalCopies"
+              type="number"
+              min={1}
+              defaultValue={1}
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="description">Short Description</Label>

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import type { Book } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import { authFetch } from "@/lib/token";
+import { API_URL, type Book } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
@@ -15,8 +16,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Spinner from "@/components/Spinner";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function MyBooksList() {
   const { data: session, isPending } = authClient.useSession();
@@ -29,7 +28,7 @@ export default function MyBooksList() {
 
   useEffect(() => {
     if (!email) return;
-    fetch(`${API_URL}/books?email=${encodeURIComponent(email)}&sort=newest`)
+    authFetch(`${API_URL}/books?email=${encodeURIComponent(email)}&sort=newest`)
       .then((res) => res.json())
       .then((data) => setBooks(Array.isArray(data) ? data : []))
       .catch(() => toast.error("Failed to load books"))
@@ -40,7 +39,7 @@ export default function MyBooksList() {
     if (!deleteTarget) return;
     try {
       setDeleting(true);
-      const res = await fetch(`${API_URL}/books/${deleteTarget._id}`, {
+      const res = await authFetch(`${API_URL}/books/${deleteTarget._id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
