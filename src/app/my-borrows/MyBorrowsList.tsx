@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import Spinner from "@/components/Spinner";
 import { authFetch } from "@/lib/token";
 import { API_URL } from "@/lib/api";
-import LottiePlayer from "@/components/LottiePlayer";
 
 type Borrow = {
   _id: string;
@@ -66,7 +65,6 @@ export default function MyBorrowsList() {
 
       {borrows.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
-          <LottiePlayer src="/lottie/empty.json" className="h-48 w-48" />
           <p className="text-muted-foreground">
             You have not borrowed any book yet.
           </p>
