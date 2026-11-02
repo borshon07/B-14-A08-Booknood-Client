@@ -51,9 +51,9 @@
 /* Light: warm paper, sage accent */
 :root {
   --radius: 0.75rem;
-  --background: #f7f6f2;
+  --background: #d8d4c6;
   --foreground: #20211f;
-  --card: #fbfaf7;
+  --card: #ebdfce;
   --card-foreground: #20211f;
   --popover: #fbfaf7;
   --popover-foreground: #20211f;
@@ -68,15 +68,15 @@
   --destructive: #b5493b;
   --border: #e2e0d9;
   --input: #e2e0d9;
-  --ring: #a6b49a;
+  --ring: #aeb6a7;
   --chart-1: #a6b49a;
   --chart-2: #d8c5b5;
   --chart-3: #77766f;
-  --chart-4: #8d9c82;
+  --chart-4: #899b7d;
   --chart-5: #c4b3a2;
-  --sidebar: #edece6;
+  --sidebar: #cfcec4;
   --sidebar-foreground: #20211f;
-  --sidebar-primary: #a6b49a;
+  --sidebar-primary: #bddaa4;
   --sidebar-primary-foreground: #20211f;
   --sidebar-accent: #d8c5b5;
   --sidebar-accent-foreground: #20211f;
@@ -92,7 +92,7 @@
   --card-foreground: #f2f0e8;
   --popover: #292d29;               /* elevated */
   --popover-foreground: #f2f0e8;
-  --primary: #a6b49a;
+  --primary: #e0f0d3;
   --primary-foreground: #171816;
   --secondary: #292d29;
   --secondary-foreground: #f2f0e8;
