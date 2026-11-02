@@ -18,11 +18,24 @@ export default function EditBookForm({ id }: { id: string }) {
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [category, setCategory] = useState("");
+  const [customCategory, setCustomCategory] = useState("");
 
   useEffect(() => {
     fetch(`${API_URL}/books/${id}`)
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setBook(data))
+      .then((data) => {
+        setBook(data);
+        if (data) {
+          // if the saved category is not in the list, show it as custom
+          if (categories.includes(data.category)) {
+            setCategory(data.category);
+          } else {
+            setCategory("custom");
+            setCustomCategory(data.category);
+          }
+        }
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -35,7 +48,9 @@ export default function EditBookForm({ id }: { id: string }) {
       { method: "POST", body: formData },
     );
     const data = await res.json();
-    if (!data.success) throw new Error("Image upload failed");
+    if (!data.success) {
+      throw new Error(data?.error?.message || "Image upload failed");
+    }
     return data.data.url as string;
   };
 
@@ -46,19 +61,22 @@ export default function EditBookForm({ id }: { id: string }) {
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
     const author = (form.elements.namedItem("author") as HTMLInputElement)
       .value;
-    const category = (form.elements.namedItem("category") as HTMLSelectElement)
-      .value;
     const description = (
       form.elements.namedItem("description") as HTMLTextAreaElement
     ).value;
     const totalCopies = Math.max(
       0,
-      Number(
-        (form.elements.namedItem("totalCopies") as HTMLInputElement).value,
-      ),
+      Number((form.elements.namedItem("totalCopies") as HTMLInputElement).value),
     );
     const file = (form.elements.namedItem("image") as HTMLInputElement)
       .files?.[0];
+
+    const finalCategory =
+      category === "custom" ? customCategory.trim() : category;
+    if (!finalCategory) {
+      toast.error("Please select or write a category");
+      return;
+    }
 
     try {
       setSaving(true);
@@ -69,7 +87,7 @@ export default function EditBookForm({ id }: { id: string }) {
         body: JSON.stringify({
           title,
           author,
-          category,
+          category: finalCategory,
           description,
           totalCopies,
           image,
@@ -112,12 +130,14 @@ export default function EditBookForm({ id }: { id: string }) {
               required
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <select
               id="category"
               name="category"
-              defaultValue={book.category}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
               className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
             >
               {categories.map((c) => (
@@ -125,8 +145,20 @@ export default function EditBookForm({ id }: { id: string }) {
                   {c}
                 </option>
               ))}
+              <option value="custom">+ Add new category</option>
             </select>
+
+            {category === "custom" && (
+              <Input
+                placeholder="Write your category (e.g. Poetry)"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                maxLength={30}
+                required
+              />
+            )}
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="image">
               Book Image (leave empty to keep current)
