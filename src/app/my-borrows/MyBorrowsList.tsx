@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Spinner from "@/components/Spinner";
 import { authFetch } from "@/lib/token";
 import { API_URL } from "@/lib/api";
+import LottiePlayer from "@/components/LottiePlayer";
 
 type Borrow = {
   _id: string;
@@ -33,18 +34,20 @@ export default function MyBorrowsList() {
   const [returningId, setReturningId] = useState<string | null>(null);
 
   useEffect(() => {
-  if (!email) return;
-  authFetch(`${API_URL}/borrows`)
-    .then((res) => res.json())
-    .then((data) => setBorrows(Array.isArray(data) ? data : []))
-    .catch(() => toast.error("Failed to load borrows"))
-    .finally(() => setLoading(false));
-}, [email]);
+    if (!email) return;
+    authFetch(`${API_URL}/borrows`)
+      .then((res) => res.json())
+      .then((data) => setBorrows(Array.isArray(data) ? data : []))
+      .catch(() => toast.error("Failed to load borrows"))
+      .finally(() => setLoading(false));
+  }, [email]);
 
   const handleReturn = async (id: string) => {
     try {
       setReturningId(id);
-      const res = await authFetch(`${API_URL}/borrows/${id}`, { method: "DELETE" });
+      const res = await authFetch(`${API_URL}/borrows/${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Return failed");
       setBorrows((prev) => prev.filter((b) => b._id !== id));
       toast.success("Book returned successfully!");
@@ -62,9 +65,12 @@ export default function MyBorrowsList() {
       <h1 className="mb-8 text-center text-3xl font-bold">My Borrows</h1>
 
       {borrows.length === 0 ? (
-        <p className="text-center text-muted-foreground">
-          You have not borrowed any book yet.
-        </p>
+        <div className="flex flex-col items-center gap-2 py-8 text-center">
+          <LottiePlayer src="/lottie/empty.json" className="h-48 w-48" />
+          <p className="text-muted-foreground">
+            You have not borrowed any book yet.
+          </p>
+        </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border bg-card">
           <table className="w-full text-left text-sm">

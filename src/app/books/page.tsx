@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { API_URL, getBooks } from "@/lib/api";
+import { getBooks } from "@/lib/api";
 import BookCard from "@/components/BookCard";
 import Spinner from "@/components/Spinner";
 
@@ -13,9 +13,7 @@ async function BookList() {
 
   if (books.length === 0) {
     return (
-      <p className="text-center text-muted-foreground">
-        No books found. (API: {API_URL})
-      </p>
+      <p className="text-center text-muted-foreground">No books found.</p>
     );
   }
 
@@ -30,8 +28,13 @@ async function BookList() {
 
 export default function AllBooksPage() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-8 text-center text-3xl font-bold">All Books</h1>
+    <section className="mx-auto max-w-7xl px-4 py-8 md:py-12">
+      <div className="mb-10 space-y-3 text-center">
+        <h1 className="text-3xl font-bold md:text-4xl">All Books</h1>
+        <p className="mx-auto max-w-xl text-muted-foreground">
+          Browse every book shared by our readers and borrow your next read.
+        </p>
+      </div>
       <Suspense fallback={<Spinner />}>
         <BookList />
       </Suspense>

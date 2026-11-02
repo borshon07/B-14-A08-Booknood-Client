@@ -37,7 +37,7 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
           <ScrollTopButton />
-          <Toaster position="top-center" />
+          <Toaster position="top-center" duration={2000} />
         </ThemeProvider>
       </body>
     </html>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen,
   BookPlus,
@@ -14,10 +14,13 @@ import {
   UserPlus,
   User,
   LogOut,
+  Menu,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { clearToken } from "@/lib/token";
 import ThemeToggle from "@/components/ThemeToggle";
 import Icon3D from "@/components/Icon3D";
 import { Button } from "@/components/ui/button";
@@ -27,7 +30,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { clearToken } from "@/lib/token";
 
 type NavItem = {
   href: string;
@@ -36,32 +38,32 @@ type NavItem = {
   show: boolean;
 };
 
-// one nav link with icon and active underline
+// one nav link: pill style, active one has a filled background
 function NavLink({
   link,
   active,
-  onHomeClick,
+  onClick,
+  mobile = false,
 }: {
   link: NavItem;
   active: boolean;
-  onHomeClick: (e: React.MouseEvent) => void;
+  onClick: (e: React.MouseEvent) => void;
+  mobile?: boolean;
 }) {
   return (
     <Link
       href={link.href}
-      onClick={link.href === "/" ? onHomeClick : undefined}
-      className={`relative flex items-center gap-1.5 px-1 py-1 text-sm font-medium transition-colors hover:text-primary ${
-        active ? "text-primary" : ""
+      onClick={onClick}
+      className={`relative flex items-center gap-2 rounded-full text-sm font-medium transition-colors ${
+        mobile ? "px-4 py-3" : "px-3.5 py-2"
+      } ${
+        active
+          ? "bg-primary text-primary-foreground"
+          : "text-foreground/80 hover:bg-accent hover:text-accent-foreground"
       }`}
     >
       <Icon3D icon={link.icon} size={18} />
       {link.label}
-      {active && (
-        <motion.span
-          layoutId="nav-underline"
-          className="absolute -bottom-1 left-0 h-0.5 w-full rounded bg-primary"
-        />
-      )}
     </Link>
   );
 }
@@ -72,6 +74,7 @@ export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // blur background after scrolling
   useEffect(() => {
@@ -88,9 +91,17 @@ export default function Navbar() {
     }
   };
 
+  const handleLinkClick = (href: string) => (e: React.MouseEvent) => {
+    if (href === "/") handleHomeClick(e);
+    setMenuOpen(false);
+  };
+
   const handleLogout = async () => {
-  clearToken();
-  await authClient.signOut();
+    clearToken();
+    await authClient.signOut();
+    toast.success("Logged out");
+    setMenuOpen(false);
+    router.push("/login");
   };
 
   const links: NavItem[] = [
@@ -107,15 +118,17 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 120, damping: 18 }}
       className={`sticky top-0 z-50 border-b transition-colors ${
-        scrolled ? "bg-background/70 backdrop-blur-md" : "bg-background"
+        scrolled || menuOpen
+          ? "bg-background/80 backdrop-blur-md"
+          : "bg-background"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3">
         {/* logo and name */}
         <Link
           href="/"
           onClick={handleHomeClick}
-          className="flex items-center gap-2 text-2xl font-bold"
+          className="flex items-center gap-2 text-xl font-bold sm:text-2xl"
         >
           <motion.span
             className="inline-flex text-primary"
@@ -123,26 +136,27 @@ export default function Navbar() {
             animate={{ rotateY: [0, 360] }}
             transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
           >
-            <BookOpen size={30} strokeWidth={2.2} />
+            <BookOpen size={28} strokeWidth={2.2} />
           </motion.span>
           <span>BookNook</span>
         </Link>
 
-        {/* links */}
-        <div className="hidden items-center gap-6 md:flex">
+        {/* desktop links */}
+        <div className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <NavLink
               key={link.href}
               link={link}
               active={pathname === link.href}
-              onHomeClick={handleHomeClick}
+              onClick={handleLinkClick(link.href)}
             />
           ))}
         </div>
 
         {/* right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
+
           {isPending ? null : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="rounded-full outline-none">
@@ -170,7 +184,7 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
+            <div className="hidden items-center gap-2 sm:flex">
               <Button variant="outline" onClick={() => router.push("/login")}>
                 <Icon3D icon={LogIn} size={16} className="mr-1.5" />
                 Login
@@ -179,22 +193,69 @@ export default function Navbar() {
                 <Icon3D icon={UserPlus} size={16} className="mr-1.5" />
                 Register
               </Button>
-            </>
+            </div>
           )}
+
+          {/* hamburger (below lg) */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Toggle menu"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
 
-      {/* mobile links */}
-      <div className="flex flex-wrap justify-center gap-4 border-t px-4 py-2 md:hidden">
-        {links.map((link) => (
-          <NavLink
-            key={link.href}
-            link={link}
-            active={pathname === link.href}
-            onHomeClick={handleHomeClick}
-          />
-        ))}
-      </div>
+      {/* mobile / tablet menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="overflow-hidden border-t lg:hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
+              {links.map((link) => (
+                <NavLink
+                  key={link.href}
+                  link={link}
+                  active={pathname === link.href}
+                  onClick={handleLinkClick(link.href)}
+                  mobile
+                />
+              ))}
+
+              {/* login / register inside the menu on small screens */}
+              {!isPending && !user && (
+                <div className="mt-2 grid grid-cols-2 gap-3 sm:hidden">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      router.push("/login");
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      router.push("/register");
+                    }}
+                  >
+                    Register
+                  </Button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }

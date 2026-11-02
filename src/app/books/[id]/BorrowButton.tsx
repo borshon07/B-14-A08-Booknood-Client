@@ -44,10 +44,13 @@ export default function BorrowButton({
         method: "POST",
         body: JSON.stringify({ bookId }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        toast.error(data.message || "Could not borrow the book");
+        toast.error(data?.message || "Could not borrow the book");
+        // no copies left: disable the button
+        if (data?.message === "Not Available") setCopies(0);
+        setOpen(false);
         return;
       }
 
@@ -64,11 +67,12 @@ export default function BorrowButton({
 
   return (
     <>
-      <p className="text-sm">
-        Available copies: <span className="font-semibold">{copies}</span>
-      </p>
-
-      <Button size="lg" disabled={unavailable} onClick={() => setOpen(true)}>
+      <Button
+        size="lg"
+        className="w-full sm:w-auto"
+        disabled={unavailable}
+        onClick={() => setOpen(true)}
+      >
         {unavailable ? "Not Available" : "Borrow This Book"}
       </Button>
 
