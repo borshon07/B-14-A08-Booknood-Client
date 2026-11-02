@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import HeroSlider from "@/components/home/HeroSlider";
+import HeroSection from "@/components/home/HeroSection";
 import NewArrivals from "@/components/home/NewArrivals";
 import HowItWorks from "@/components/home/HowItWorks";
 import TopCategories from "@/components/home/TopCategories";
+import Spinner from "@/components/Spinner";
 
 export const metadata: Metadata = {
   title: "BookNook | Home",
@@ -12,10 +13,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <HeroSlider />
-      <Suspense
-        fallback={<p className="py-16 text-center">Loading books...</p>}
-      >
+      <Suspense fallback={<Spinner />}>
+        <HeroSection />
+      </Suspense>
+      <Suspense fallback={<Spinner />}>
         <NewArrivals />
       </Suspense>
       <HowItWorks />
