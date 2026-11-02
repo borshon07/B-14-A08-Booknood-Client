@@ -1,6 +1,7 @@
 
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import type { ComponentType } from "react";
 
@@ -10,7 +11,20 @@ type LottieProps = {
   className?: string;
 };
 
-type LottieComponent = ComponentType<LottieProps>;
+const Lottie = dynamic(
+  () =>
+    import("lottie-react").then((mod) => {
+      const lottieModule = mod as unknown as {
+        default: ComponentType<LottieProps>;
+      };
+
+      return lottieModule.default;
+    }),
+  {
+    ssr: false,
+    loading: () => <div className="h-64 w-64" />,
+  }
+);
 
 export default function LottiePlayer({
   src,
@@ -22,33 +36,14 @@ export default function LottiePlayer({
   loop?: boolean;
 }) {
   const [data, setData] = useState<object | null>(null);
-  const [Lottie, setLottie] = useState<LottieComponent | null>(null);
 
-  // Dynamically import Lottie on the client
-  useEffect(() => {
-    let active = true;
-
-    import("lottie-react").then((module) => {
-      const LottieComponent = module.default;
-
-      if (active && LottieComponent) {
-        setLottie(() => LottieComponent as LottieComponent);
-      }
-    });
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  // Fetch animation JSON
   useEffect(() => {
     let active = true;
 
     fetch(src)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to load Lottie animation");
+          throw new Error("Failed to fetch Lottie animation");
         }
 
         return response.json();
@@ -59,7 +54,7 @@ export default function LottiePlayer({
         }
       })
       .catch((error) => {
-        console.error("Lottie animation error:", error);
+        console.error("Lottie loading error:", error);
       });
 
     return () => {
@@ -67,7 +62,7 @@ export default function LottiePlayer({
     };
   }, [src]);
 
-  if (!data || !Lottie) {
+  if (!data) {
     return <div className={className} />;
   }
 
