@@ -29,6 +29,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 type NavItem = {
   href: string;
@@ -83,7 +84,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
- 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -91,7 +91,6 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === "/") {
       e.preventDefault();
@@ -138,7 +137,6 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          
           <Link
             href="/"
             onClick={handleHomeClick}
@@ -148,7 +146,6 @@ export default function Navbar() {
             <span className="font-heading text-2xl leading-none">BookNook</span>
           </Link>
 
-        
           <nav className="hidden items-center gap-8 lg:flex">
             {links.map((link) => (
               <DesktopLink
@@ -166,11 +163,12 @@ export default function Navbar() {
             {isPending ? null : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="rounded-full outline-none">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={user.image || "https://i.ibb.co/placeholder/user.png"}
                     alt={user.name}
-                    className="h-10 w-10 rounded-full border border-border object-cover transition-transform hover:scale-105"
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-full border border-border object-cover"
                   />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -200,7 +198,6 @@ export default function Navbar() {
               </div>
             )}
 
-            
             <Button
               variant="outline"
               size="icon"
@@ -218,7 +215,6 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      
       <AnimatePresence>
         {menuOpen && (
           <>

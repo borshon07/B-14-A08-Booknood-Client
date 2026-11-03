@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Spinner from "@/components/Spinner";
 import { authFetch } from "@/lib/token";
 import { API_URL } from "@/lib/api";
+import Image from "next/image";
 
 type Borrow = {
   _id: string;
@@ -96,12 +97,15 @@ export default function MyBorrowsList() {
                 return (
                   <tr key={b._id} className="border-b last:border-0">
                     <td className="p-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={b.bookImage}
-                        alt={b.bookTitle}
-                        className="h-16 w-12 rounded object-cover"
-                      />
+                      <div className="relative h-16 w-12 overflow-hidden rounded">
+                        <Image
+                          src={b.bookImage}
+                          alt={b.bookTitle}
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
+                      </div>
                     </td>
                     <td className="p-3 font-medium">{b.bookTitle}</td>
                     <td className="p-3">{formatDate(b.borrowDate)}</td>

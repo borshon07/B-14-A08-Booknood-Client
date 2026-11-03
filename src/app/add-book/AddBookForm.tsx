@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Spinner from "@/components/Spinner";
 import { authFetch } from "@/lib/token";
 import { API_URL, type Book } from "@/lib/api";
+import Image from "next/image";
 
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -160,12 +161,15 @@ export default function AddBookForm() {
                     key={b._id}
                     className="flex items-center gap-3 rounded px-2 py-1.5 text-sm hover:bg-accent"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={b.image}
-                      alt={b.title}
-                      className="h-10 w-8 rounded object-cover"
-                    />
+                    <div className="relative h-10 w-8 overflow-hidden rounded">
+                      <Image
+                        src={b.image}
+                        alt={b.title}
+                        fill
+                        sizes="32px"
+                        className="object-cover"
+                      />
+                    </div>
                     <div>
                       <p className="font-medium">{b.title}</p>
                       <p className="text-xs text-muted-foreground">

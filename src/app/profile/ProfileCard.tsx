@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Spinner from "@/components/Spinner";
+import Image from "next/image";
 
 export default function ProfileCard() {
   const { data: session, isPending } = authClient.useSession();
@@ -40,10 +41,11 @@ export default function ProfileCard() {
       <div className="space-y-6 rounded-xl border bg-card p-8 text-center">
         <h1 className="text-3xl font-bold">My Profile</h1>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={user.image || "https://i.ibb.co/placeholder/user.png"}
           alt={user.name}
+          width={112}
+          height={112}
           className="mx-auto h-28 w-28 rounded-full border-4 border-primary object-cover"
         />
 

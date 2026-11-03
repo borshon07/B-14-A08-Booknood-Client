@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
+import Image from "next/image";
 
 export type FeaturedBook = {
   _id: string;
@@ -174,11 +175,12 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
                   transition={{ duration: 0.5 }}
                 >
                   {book.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={book.image}
                       alt={book.title}
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="300px"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-primary-foreground">

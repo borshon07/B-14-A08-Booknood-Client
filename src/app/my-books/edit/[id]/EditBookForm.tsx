@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Spinner from "@/components/Spinner";
 import { authFetch } from "@/lib/token";
 import { API_URL, type Book } from "@/lib/api";
+import Image from "next/image";
 
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -66,7 +67,9 @@ export default function EditBookForm({ id }: { id: string }) {
     ).value;
     const totalCopies = Math.max(
       0,
-      Number((form.elements.namedItem("totalCopies") as HTMLInputElement).value),
+      Number(
+        (form.elements.namedItem("totalCopies") as HTMLInputElement).value,
+      ),
     );
     const file = (form.elements.namedItem("image") as HTMLInputElement)
       .files?.[0];
@@ -163,12 +166,15 @@ export default function EditBookForm({ id }: { id: string }) {
             <Label htmlFor="image">
               Book Image (leave empty to keep current)
             </Label>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={book.image}
-              alt={book.title}
-              className="h-24 w-20 rounded object-cover"
-            />
+            <div className="relative h-24 w-20 overflow-hidden rounded">
+              <Image
+                src={book.image}
+                alt={book.title}
+                fill
+                sizes="80px"
+                className="object-cover"
+              />
+            </div>
             <Input id="image" name="image" type="file" accept="image/*" />
           </div>
           <div className="space-y-2">

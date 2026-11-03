@@ -8,6 +8,7 @@ import BookCard from "@/components/BookCard";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import BorrowButton from "./BorrowButton";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "BookNook | Book Details",
@@ -46,12 +47,14 @@ async function BookDetails({ id }: { id: string }) {
 
       <div className="grid gap-8 md:grid-cols-[2fr_3fr] md:gap-10">
         {/* image */}
-        <div className="mx-auto w-full max-w-sm md:sticky md:top-24 md:mx-0 md:max-w-none md:self-start">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative h-[320px] w-full sm:h-[420px] md:h-[480px]">
+          <Image
             src={book.image}
             alt={book.title}
-            className="h-[320px] w-full rounded-2xl border object-cover shadow-xl sm:h-[420px] md:h-[480px]"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 40vw"
+            className="rounded-2xl border object-cover shadow-xl"
           />
         </div>
 

@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Spinner from "@/components/Spinner";
+import Image from "next/image";
 
 export default function MyBooksList() {
   const { data: session, isPending } = authClient.useSession();
@@ -80,12 +81,15 @@ export default function MyBooksList() {
               {books.map((book) => (
                 <tr key={book._id} className="border-b last:border-0">
                   <td className="p-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="h-16 w-12 rounded object-cover"
-                    />
+                    <div className="relative h-16 w-12 overflow-hidden rounded">
+                      <Image
+                        src={book.image}
+                        alt={book.title}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
+                      />
+                    </div>
                   </td>
                   <td className="p-3 font-medium">{book.title}</td>
                   <td className="p-3">{book.author}</td>

@@ -1,16 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Book } from "@/lib/api";
+import Image from "next/image";
 
-
+// soft pastel backgrounds (work in light and dark mode)
 // soft tints that work with the tangerine theme (light and dark)
 const tints = [
   "rgba(242, 106, 27, 0.12)", // tangerine
@@ -76,12 +72,15 @@ export default function BookCard({
             className="relative flex h-72 items-center justify-center overflow-hidden rounded-3xl sm:h-64 lg:h-72"
             style={{ backgroundColor: tint }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={book.image}
-              alt={book.title}
-              className="h-[82%] w-[58%] rounded-md object-cover shadow-2xl transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-105 group-hover:-rotate-2"
-            />
+            <div className="relative h-[82%] w-[58%] transition-transform duration-500 group-hover:-translate-y-1 group-hover:scale-105 group-hover:-rotate-2">
+              <Image
+                src={book.image}
+                alt={book.title}
+                fill
+                sizes="(max-width: 640px) 60vw, 20vw"
+                className="rounded-md object-cover shadow-2xl"
+              />
+            </div>
 
             <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-xs font-semibold backdrop-blur">
               {book.category}
