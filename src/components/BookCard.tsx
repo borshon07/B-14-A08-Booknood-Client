@@ -10,13 +10,14 @@ import {
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Book } from "@/lib/api";
 
-// soft pastel backgrounds (work in light and dark mode)
+
+// soft tints that work with the tangerine theme (light and dark)
 const tints = [
-  "rgba(135, 163, 131, 0.22)", // sage
-  "rgba(214, 195, 165, 0.30)", // champagne
-  "rgba(140, 160, 200, 0.22)", // soft blue
-  "rgba(200, 150, 160, 0.22)", // soft rose
-  "rgba(170, 150, 200, 0.22)", // soft lilac
+  "rgba(242, 106, 27, 0.12)", // tangerine
+  "rgba(120, 120, 130, 0.14)", // grey
+  "rgba(255, 170, 90, 0.16)", // amber
+  "rgba(200, 90, 60, 0.12)", // rust
+  "rgba(150, 140, 130, 0.16)", // stone
 ];
 
 export default function BookCard({

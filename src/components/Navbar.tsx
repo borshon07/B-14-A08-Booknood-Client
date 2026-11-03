@@ -37,7 +37,6 @@ type NavItem = {
   show: boolean;
 };
 
-// desktop link: minimal, with a sliding underline for the active page
 function DesktopLink({
   link,
   active,
@@ -52,7 +51,9 @@ function DesktopLink({
       href={link.href}
       onClick={onClick}
       className={`relative px-1 py-2 text-sm font-medium tracking-wide transition-colors ${
-        active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+        active
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground"
       }`}
     >
       {link.label}
@@ -75,7 +76,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // blur the background after scrolling
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
@@ -83,7 +83,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // lock page scroll while the mobile drawer is open
+ 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -91,7 +91,7 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  // if already on home, click scrolls to top smoothly
+  
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === "/") {
       e.preventDefault();
@@ -117,7 +117,12 @@ export default function Navbar() {
     { href: "/books", label: "All Books", icon: Library, show: true },
     { href: "/add-book", label: "Add Book", icon: BookPlus, show: !!user },
     { href: "/my-books", label: "My Books", icon: BookOpen, show: !!user },
-    { href: "/my-borrows", label: "My Borrows", icon: BookMarked, show: !!user },
+    {
+      href: "/my-borrows",
+      label: "My Borrows",
+      icon: BookMarked,
+      show: !!user,
+    },
   ].filter((l) => l.show);
 
   return (
@@ -133,7 +138,7 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          {/* logo and name */}
+          
           <Link
             href="/"
             onClick={handleHomeClick}
@@ -143,7 +148,7 @@ export default function Navbar() {
             <span className="font-heading text-2xl leading-none">BookNook</span>
           </Link>
 
-          {/* desktop links */}
+        
           <nav className="hidden items-center gap-8 lg:flex">
             {links.map((link) => (
               <DesktopLink
@@ -155,7 +160,6 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* right side */}
           <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
 
@@ -196,7 +200,7 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* hamburger (below lg) */}
+            
             <Button
               variant="outline"
               size="icon"
@@ -214,7 +218,7 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* mobile drawer */}
+      
       <AnimatePresence>
         {menuOpen && (
           <>
