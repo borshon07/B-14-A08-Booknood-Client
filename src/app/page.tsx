@@ -24,13 +24,17 @@ export default function Home() {
       <FeatureBar />
       <Suspense fallback={<Spinner />}>
         <NewArrivals />
-        <Collections />
+        <Suspense fallback={null}>
+          <Collections />
+        </Suspense>
       </Suspense>
       <Suspense fallback={null}>
         <Recommendation />
       </Suspense>
       <HowItWorks />
-      <TopCategories />
+      <Suspense fallback={null}>
+        <TopCategories />
+      </Suspense>
       <Promo />
       <Events />
     </>
