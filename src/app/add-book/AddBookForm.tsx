@@ -21,16 +21,13 @@ export default function AddBookForm() {
   const user = session?.user;
   const [loading, setLoading] = useState(false);
 
-  // states for category (select or write your own)
   const [category, setCategory] = useState("");
   const [customCategory, setCustomCategory] = useState("");
 
-  // states for title suggestions
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [titleInput, setTitleInput] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // load all books once for suggestions
   useEffect(() => {
     fetch(`${API_URL}/books`)
       .then((res) => res.json())
@@ -38,7 +35,6 @@ export default function AddBookForm() {
       .catch(() => setAllBooks([]));
   }, []);
 
-  // books that match what the user typed
   const suggestions =
     titleInput.trim().length >= 2
       ? allBooks
@@ -48,7 +44,6 @@ export default function AddBookForm() {
           .slice(0, 5)
       : [];
 
-  // upload image to imgbb and return the url
   const uploadImage = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
@@ -78,7 +73,6 @@ export default function AddBookForm() {
     const file = (form.elements.namedItem("image") as HTMLInputElement)
       .files?.[0];
 
-    // use the typed category if the user chose "Add new category"
     const finalCategory =
       category === "custom" ? customCategory.trim() : category;
 
@@ -134,7 +128,6 @@ export default function AddBookForm() {
         <h1 className="text-center text-3xl font-bold">Add a Book</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* title with suggestions */}
           <div className="relative space-y-2">
             <Label htmlFor="title">Book Title</Label>
             <Input
@@ -187,7 +180,6 @@ export default function AddBookForm() {
             <Input id="author" name="author" required />
           </div>
 
-          {/* category: select or write your own */}
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <select

@@ -44,17 +44,17 @@ export default function HeroSlider({ books }: { books: FeaturedBook[] }) {
 
   return (
     <section className="relative overflow-hidden border-b bg-secondary/60">
-      {/* soft warm glow, no moving particles */}
       <div className="pointer-events-none absolute -left-24 top-0 h-96 w-96 rounded-full bg-accent/40 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-primary/25 blur-3xl" />
 
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-4 px-4 py-10 sm:px-6 md:min-h-[640px] md:grid-cols-[1.1fr_1fr] md:gap-10">
-        {/* left: slider text */}
         <Swiper
           modules={[Autoplay, EffectFade, Pagination]}
           effect="fade"
           fadeEffect={{ crossFade: true }}
-          autoplay={reduce ? false : { delay: 6000, disableOnInteraction: false }}
+          autoplay={
+            reduce ? false : { delay: 6000, disableOnInteraction: false }
+          }
           pagination={{ clickable: true }}
           loop
           onSlideChange={(s) => setActive(s.realIndex)}
@@ -107,7 +107,6 @@ export default function HeroSlider({ books }: { books: FeaturedBook[] }) {
           ))}
         </Swiper>
 
-        {/* right: 3D featured book */}
         <div className="flex flex-col items-center">
           <Book3D book={featured} />
           <div className="h-10 text-center">

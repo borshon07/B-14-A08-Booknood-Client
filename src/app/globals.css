@@ -48,7 +48,6 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Light: warm paper white, tangerine accent */
 :root {
   --radius: 0.75rem;
   --background: #faf8f5;
@@ -57,13 +56,13 @@
   --card-foreground: #14110f;
   --popover: #ffffff;
   --popover-foreground: #14110f;
-  --primary: #f26a1b;               /* tangerine */
+  --primary: #f26a1b;
   --primary-foreground: #ffffff;
   --secondary: #f1ede7;
   --secondary-foreground: #14110f;
   --muted: #f1ede7;
   --muted-foreground: #6d665e;
-  --accent: #ffe6d3;                /* soft tangerine tint */
+  --accent: #ffe6d3;
   --accent-foreground: #8a3a08;
   --destructive: #c62828;
   --border: #e6e0d8;
@@ -84,7 +83,6 @@
   --sidebar-ring: #f26a1b;
 }
 
-/* Dark: obsidian, tangerine glow */
 .dark {
   --background: #0b0b0d;
   --foreground: #f5f2ee;
@@ -92,13 +90,13 @@
   --card-foreground: #f5f2ee;
   --popover: #1b1b1f;
   --popover-foreground: #f5f2ee;
-  --primary: #ff7a1a;               /* tangerine */
+  --primary: #ff7a1a;
   --primary-foreground: #0b0b0d;
   --secondary: #1b1b1f;
   --secondary-foreground: #f5f2ee;
   --muted: #141417;
   --muted-foreground: #a09b94;
-  --accent: #2a1c12;                /* dark tangerine tint */
+  --accent: #2a1c12;
   --accent-foreground: #ffb27a;
   --destructive: #ff6b5e;
   --border: #26262b;
@@ -123,17 +121,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     @apply font-sans;
     scroll-behavior: smooth;
   }
+
   body {
     @apply bg-background text-foreground;
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
   }
-  /* editorial serif headings (DM Serif has one weight only) */
+
   h1,
   h2,
   h3 {
@@ -148,6 +148,7 @@
   html {
     scroll-behavior: auto;
   }
+
   *,
   *::before,
   *::after {

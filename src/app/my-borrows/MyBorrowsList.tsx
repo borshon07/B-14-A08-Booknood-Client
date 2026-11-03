@@ -25,7 +25,6 @@ const formatDate = (date: string) =>
     year: "numeric",
   });
 
-// days left until the return date
 const daysLeft = (date: string) =>
   Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 

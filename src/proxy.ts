@@ -14,7 +14,6 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-// only these routes are private
 export const config = {
   matcher: [
     "/add-book",

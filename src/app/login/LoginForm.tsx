@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // go back to the page the user wanted, or Home
   const redirectTo = searchParams.get("redirect") || "/";
 
   const [loading, setLoading] = useState(false);
@@ -90,7 +89,6 @@ export default function LoginForm() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {/* forget password: UI only (not implemented, as the task says) */}
             <div className="text-right">
               <button
                 type="button"

@@ -10,7 +10,6 @@ export default function Preloader() {
   const [show, setShow] = useState(true);
   const [count, setCount] = useState(0);
 
-  // counts 0 to 100 on every full page load / reload
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const controls = animate(0, 100, {
@@ -37,12 +36,9 @@ export default function Preloader() {
           exit={{ clipPath: "circle(0% at 50% 50%)" }}
           transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
         >
-          {/* soft glow */}
           <div className="absolute h-80 w-80 rounded-full bg-primary/15 blur-3xl" />
 
-          {/* ring + orbiting books */}
           <div className="relative flex h-64 w-64 items-center justify-center">
-            {/* books fly in and orbit */}
             <motion.div
               className="absolute inset-0"
               animate={{ rotate: 360 }}
@@ -72,7 +68,6 @@ export default function Preloader() {
               ))}
             </motion.div>
 
-            {/* progress ring */}
             <svg viewBox="0 0 200 200" className="h-44 w-44 -rotate-90">
               <circle
                 cx="100"
@@ -94,14 +89,12 @@ export default function Preloader() {
               />
             </svg>
 
-            {/* counter in the middle */}
             <div className="absolute flex items-baseline text-4xl font-bold tabular-nums">
               {count}
               <span className="text-lg text-primary">%</span>
             </div>
           </div>
 
-          {/* BookNook is "written" with a pen: outline draws, then fills */}
           <svg viewBox="0 0 400 80" className="h-16 w-72 md:h-20 md:w-96">
             <motion.text
               x="200"

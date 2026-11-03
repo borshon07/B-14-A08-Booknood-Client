@@ -15,7 +15,6 @@ const meta = [
 export default async function Collections() {
   const books = await getBooks("?sort=newest");
 
-  // cover and count come from real books of each category
   const items: CollectionItem[] = meta.map((m) => {
     const inCategory = books.filter((b) => b.category === m.title);
     return {

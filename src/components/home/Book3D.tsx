@@ -11,16 +11,15 @@ export type FeaturedBook = {
   image: string;
 };
 
-const W = 300; // book width
-const H = 420; // book height
-const T = 44; // book thickness
+const W = 300;
+const H = 420;
+const T = 44;
 
 const stripes =
   "repeating-linear-gradient(90deg, #f7f1e3 0px, #f7f1e3 2px, #d8cdb5 2px, #d8cdb5 3px)";
 const stripesFlat =
   "repeating-linear-gradient(0deg, #f7f1e3 0px, #f7f1e3 2px, #d8cdb5 2px, #d8cdb5 3px)";
 
-// loose pages that fly around the book
 const loosePages = [
   { left: "6%", top: "58%", delay: 0 },
   { left: "88%", top: "30%", delay: 1.4 },
@@ -30,10 +29,8 @@ const loosePages = [
 export default function Book3D({ book }: { book: FeaturedBook }) {
   return (
     <div className="relative flex h-[340px] items-center justify-center md:h-[560px]">
-      {/* soft glow behind the book */}
       <div className="absolute h-72 w-72 rounded-full bg-primary/25 blur-3xl md:h-[26rem] md:w-[26rem]" />
 
-      {/* flying loose pages */}
       {loosePages.map((p, i) => (
         <motion.div
           key={i}
@@ -56,13 +53,11 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
       ))}
 
       <div className="scale-[0.66] md:scale-100">
-        {/* floats up and down */}
         <motion.div
           style={{ perspective: 1400 }}
           animate={{ y: [0, -14, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-          {/* slowly rotating book */}
           <motion.div
             className="relative"
             style={{ width: W, height: H, transformStyle: "preserve-3d" }}
@@ -70,13 +65,11 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
             animate={{ rotateX: -8, rotateY: [-30, 28, -30] }}
             transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
           >
-            {/* back cover */}
             <div
               className="absolute inset-0 rounded-md bg-primary"
               style={{ transform: `translateZ(${-T / 2}px) rotateY(180deg)` }}
             />
 
-            {/* fluttering pages (peek out on the right side) */}
             {[0, 1, 2, 3, 4, 5, 6].map((i) => (
               <motion.div
                 key={i}
@@ -99,7 +92,6 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
               />
             ))}
 
-            {/* right side: page edges */}
             <div
               className="absolute"
               style={{
@@ -111,7 +103,6 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
                 transform: "rotateY(90deg)",
               }}
             />
-            {/* top page edges */}
             <div
               className="absolute"
               style={{
@@ -123,7 +114,7 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
                 transform: "rotateX(90deg)",
               }}
             />
-            {/* bottom page edges */}
+
             <div
               className="absolute"
               style={{
@@ -136,7 +127,6 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
               }}
             />
 
-            {/* spine */}
             <div
               className="absolute flex items-center justify-center bg-primary"
               style={{
@@ -157,7 +147,6 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
               </span>
             </div>
 
-            {/* front cover (changes with the featured book) */}
             <div
               className="absolute inset-0 overflow-hidden rounded-r-md rounded-l-sm border border-white/20 bg-primary shadow-2xl"
               style={{
@@ -204,7 +193,6 @@ export default function Book3D({ book }: { book: FeaturedBook }) {
                 </motion.div>
               </AnimatePresence>
 
-              {/* hinge shadow near the spine */}
               <div className="absolute inset-y-0 left-0 w-5 bg-gradient-to-r from-black/35 to-transparent" />
               <div className="absolute inset-y-0 left-5 w-px bg-white/25" />
             </div>

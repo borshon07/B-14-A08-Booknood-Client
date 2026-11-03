@@ -121,7 +121,6 @@ export default function MyBooksList() {
         </div>
       )}
 
-      {/* custom confirm modal */}
       <Dialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}

@@ -21,7 +21,8 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "BookNook",
-  description: "A small online library. Add a book, borrow a book, return a book.",
+  description:
+    "A small online library. Add a book, borrow a book, return a book.",
 };
 
 export default function RootLayout({

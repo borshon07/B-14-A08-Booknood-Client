@@ -48,7 +48,6 @@ export default function BorrowButton({
 
       if (!res.ok) {
         toast.error(data?.message || "Could not borrow the book");
-        // no copies left: disable the button
         if (data?.message === "Not Available") setCopies(0);
         setOpen(false);
         return;

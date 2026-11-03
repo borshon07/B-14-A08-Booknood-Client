@@ -28,7 +28,6 @@ export default function EditBookForm({ id }: { id: string }) {
       .then((data) => {
         setBook(data);
         if (data) {
-          // if the saved category is not in the list, show it as custom
           if (categories.includes(data.category)) {
             setCategory(data.category);
           } else {
@@ -40,7 +39,6 @@ export default function EditBookForm({ id }: { id: string }) {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // upload new image to imgbb (only if user picks a new one)
   const uploadImage = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);

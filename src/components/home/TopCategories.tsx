@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, FlaskConical, Landmark, Smile, Layers } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  FlaskConical,
+  Landmark,
+  Smile,
+  Layers,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getBooks } from "@/lib/api";
 import Reveal from "@/components/Reveal";
@@ -9,7 +16,11 @@ const categories: {
   desc: string;
   icon: LucideIcon;
 }[] = [
-  { name: "Fiction", desc: "Novels and stories that carry you away", icon: BookOpen },
+  {
+    name: "Fiction",
+    desc: "Novels and stories that carry you away",
+    icon: BookOpen,
+  },
   { name: "Science", desc: "Curious minds and big ideas", icon: FlaskConical },
   { name: "History", desc: "Learn from the days gone by", icon: Landmark },
   { name: "Kids", desc: "Little readers, big worlds", icon: Smile },
@@ -19,7 +30,6 @@ const categories: {
 export default async function TopCategories() {
   const books = await getBooks();
 
-  // count books of each category from real data
   const countOf = (name: string) =>
     books.filter((b) => b.category === name).length;
 
@@ -41,7 +51,6 @@ export default async function TopCategories() {
         {categories.map((c, i) => {
           const Icon = c.icon;
           const count = countOf(c.name);
-          // first card is wide to make the layout less boring
           const wide = i === 0 ? "lg:col-span-3" : "lg:col-span-3";
           const size = i < 2 ? wide : "lg:col-span-2";
 
@@ -51,7 +60,6 @@ export default async function TopCategories() {
                 href="/books"
                 className="group relative flex h-full min-h-[190px] flex-col justify-between overflow-hidden rounded-3xl border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary"
               >
-                {/* big faded icon in the corner */}
                 <Icon
                   className="absolute -bottom-6 -right-6 text-primary/10 transition-transform duration-500 group-hover:scale-110 group-hover:text-primary/20"
                   size={150}

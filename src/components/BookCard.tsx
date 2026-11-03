@@ -52,7 +52,6 @@ export default function BookCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
     >
-      {/* the whole card is a link to the details page */}
       <Link
         href={`/books/${book._id}`}
         aria-label={`View details of ${book.title}`}
@@ -67,7 +66,6 @@ export default function BookCard({
             my.set(0);
           }}
         >
-          {/* pastel box with the book cover */}
           <div
             className="relative flex h-72 items-center justify-center overflow-hidden rounded-3xl sm:h-64 lg:h-72"
             style={{ backgroundColor: tint }}
@@ -96,7 +94,6 @@ export default function BookCard({
             </span>
           </div>
 
-          {/* info */}
           <div className="flex flex-1 flex-col gap-1 px-1">
             <div className="flex items-start justify-between gap-3">
               <h3 className="line-clamp-1 text-lg font-bold transition-colors group-hover:text-primary">
@@ -110,7 +107,6 @@ export default function BookCard({
               by {book.author}
             </p>
 
-            {/* small text link (keeps the "View Details" requirement) */}
             <span className="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-medium text-primary">
               View Details
               <ArrowRight

@@ -8,7 +8,6 @@ type RevealProps = {
   className?: string;
 };
 
-// fades up when it enters the screen (only once)
 export default function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   return (
     <motion.div

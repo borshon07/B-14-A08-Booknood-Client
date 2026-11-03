@@ -9,7 +9,10 @@ export default async function NewArrivals() {
   const books = await getBooks("?sort=newest&limit=6");
 
   return (
-    <section id="new-arrivals" className="mx-auto max-w-7xl px-4 py-14 md:py-20">
+    <section
+      id="new-arrivals"
+      className="mx-auto max-w-7xl px-4 py-14 md:py-20"
+    >
       <Reveal>
         <div className="mb-10 space-y-3 text-center">
           <span className="inline-block rounded-full border border-primary/40 bg-primary/10 px-4 py-1 text-sm font-medium text-primary">

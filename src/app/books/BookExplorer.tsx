@@ -12,7 +12,6 @@ export default function BookExplorer({ books }: { books: Book[] }) {
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [sort, setSort] = useState("newest");
 
-  // categories come from the real data (so custom ones appear too)
   const categories = useMemo(
     () => ["All", ...Array.from(new Set(books.map((b) => b.category)))],
     [books],
@@ -40,7 +39,6 @@ export default function BookExplorer({ books }: { books: Book[] }) {
 
   return (
     <div className="space-y-8">
-      {/* search and controls */}
       <div className="space-y-4">
         <div className="relative mx-auto max-w-xl">
           <Search

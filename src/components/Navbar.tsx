@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   BookOpen,
   BookPlus,
@@ -76,6 +76,7 @@ export default function Navbar() {
   const user = session?.user;
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -142,7 +143,15 @@ export default function Navbar() {
             onClick={handleHomeClick}
             className="flex items-center gap-2"
           >
-            <BookOpen className="text-primary" size={26} strokeWidth={1.8} />
+            <motion.span
+              className="inline-flex text-primary"
+              style={{ perspective: 400 }}
+              animate={reduce ? undefined : { rotateY: [0, 360] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              whileHover={{ scale: 1.15 }}
+            >
+              <BookOpen size={28} strokeWidth={1.8} />
+            </motion.span>
             <span className="font-heading text-2xl leading-none">BookNook</span>
           </Link>
 
