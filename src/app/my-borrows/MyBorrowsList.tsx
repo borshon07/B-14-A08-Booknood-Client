@@ -24,6 +24,10 @@ const formatDate = (date: string) =>
     year: "numeric",
   });
 
+// days left until the return date
+const daysLeft = (date: string) =>
+  Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
 export default function MyBorrowsList() {
   const { data: session, isPending } = authClient.useSession();
   const email = session?.user?.email;
@@ -60,8 +64,13 @@ export default function MyBorrowsList() {
   if (isPending || loading) return <Spinner />;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12">
-      <h1 className="mb-8 text-center text-3xl font-bold">My Borrows</h1>
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12">
+      <div className="mb-10 space-y-3 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+          My Borrows
+        </p>
+        <h1 className="text-3xl md:text-5xl">Your Reading Journey</h1>
+      </div>
 
       {borrows.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
@@ -82,30 +91,46 @@ export default function MyBorrowsList() {
               </tr>
             </thead>
             <tbody>
-              {borrows.map((b) => (
-                <tr key={b._id} className="border-b last:border-0">
-                  <td className="p-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={b.bookImage}
-                      alt={b.bookTitle}
-                      className="h-16 w-12 rounded object-cover"
-                    />
-                  </td>
-                  <td className="p-3 font-medium">{b.bookTitle}</td>
-                  <td className="p-3">{formatDate(b.borrowDate)}</td>
-                  <td className="p-3">{formatDate(b.returnDate)}</td>
-                  <td className="p-3 text-right">
-                    <Button
-                      size="sm"
-                      onClick={() => handleReturn(b._id)}
-                      disabled={returningId === b._id}
-                    >
-                      {returningId === b._id ? "Returning..." : "Return Book"}
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+              {borrows.map((b) => {
+                const left = daysLeft(b.returnDate);
+                return (
+                  <tr key={b._id} className="border-b last:border-0">
+                    <td className="p-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={b.bookImage}
+                        alt={b.bookTitle}
+                        className="h-16 w-12 rounded object-cover"
+                      />
+                    </td>
+                    <td className="p-3 font-medium">{b.bookTitle}</td>
+                    <td className="p-3">{formatDate(b.borrowDate)}</td>
+                    <td className="p-3">
+                      <span className="whitespace-nowrap">
+                        {formatDate(b.returnDate)}
+                      </span>
+                      <span
+                        className={`ml-2 whitespace-nowrap rounded-full px-2 py-0.5 text-xs ${
+                          left < 0
+                            ? "bg-destructive/15 text-destructive"
+                            : "bg-accent text-accent-foreground"
+                        }`}
+                      >
+                        {left < 0 ? "Overdue" : `${left} days left`}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <Button
+                        size="sm"
+                        onClick={() => handleReturn(b._id)}
+                        disabled={returningId === b._id}
+                      >
+                        {returningId === b._id ? "Returning..." : "Return Book"}
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
