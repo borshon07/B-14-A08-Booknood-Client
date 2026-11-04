@@ -18,7 +18,7 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t bg-secondary/50">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-        {/* brand */}
+      
         <div className="space-y-4">
           <Link href="/" className="flex items-center gap-2">
             <BookOpen className="text-primary" size={26} strokeWidth={1.8} />
@@ -39,7 +39,7 @@ export default function Footer() {
                 <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.88v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z" />
               </svg>
             </Link>
-            {/* new X logo */}
+            
             <Link
               href="https://x.com"
               target="_blank"
@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* quick links */}
+        
         <div className="space-y-4">
           <h3 className="font-heading text-xl">Quick Links</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
@@ -80,7 +80,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* categories */}
+        
         <div className="space-y-4">
           <h3 className="font-heading text-xl">Categories</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
@@ -97,7 +97,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* contact */}
+        
         <div className="space-y-4">
           <h3 className="font-heading text-xl">Contact</h3>
           <ul className="space-y-3 text-sm text-muted-foreground">
